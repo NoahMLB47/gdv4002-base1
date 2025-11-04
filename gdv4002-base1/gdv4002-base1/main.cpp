@@ -4,10 +4,12 @@
 // Function prototypes
 
 void myUpdateScene(GLFWwindow* window, double tDelta);
+//float setCurrentRotation(float);
+
 //void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 const float pi = 3.141593f;
-float moveVelocity = 2.0f;
+float moveVelocity = 0.0f;
 
 int main(void) 
 {
@@ -29,8 +31,6 @@ int main(void)
 	addObject("player1", glm::vec2(1, 1), 45 * (pi/180), glm::vec2(0.5, 0.25), "Resources\\Textures\\ship2.png", TextureProperties::NearestFilterTexture());
 	setUpdateFunction(myUpdateScene);
 
-	addObject("player2", glm::vec2(-1, 1), 45 * (pi / 180), glm::vec2(0.5, 0.5), "Resources\\Textures\\player1_ship.png", TextureProperties::NearestFilterTexture());
-
 	//initialise keyboard input
 
 	//setKeyboardHandler(myKeyboardHandler);
@@ -48,10 +48,8 @@ int main(void)
 void myUpdateScene(GLFWwindow* window, double tDelta) 
 {
 	// add update code here
-	const float pi = 3.141593f;
-	const float thetaVelocity = glm::radians(180.0f); // 90 degrees stored as radians
-
-
+	const float thetaVelocity = glm::radians(360.0f); // 90 degrees stored as radians
+	static float currentRotation = 0;
 
 	GameObject2D* player1 = getObject("player1");
 
@@ -67,6 +65,12 @@ void myUpdateScene(GLFWwindow* window, double tDelta)
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
+		currentRotation = player1->orientation;
+		moveVelocity = moveVelocity + (3.0f * (float)tDelta);
+
+		if (moveVelocity > 6)
+			moveVelocity = 6;
+		
 		//moveVelocity = moveVelocity + 0.1f;
 		player1->position = player1->position + (glm::vec2(cos(player1->orientation), sin(player1->orientation)) * (moveVelocity * (float)tDelta));
 	}
@@ -75,7 +79,19 @@ void myUpdateScene(GLFWwindow* window, double tDelta)
 	{
 		player1->position = player1->position + (glm::vec2(-cos(player1->orientation), -sin(player1->orientation)) * (moveVelocity * (float)tDelta));
 	}
+
+	if ((glfwGetKey(window, GLFW_KEY_UP) != GLFW_PRESS) && (glfwGetKey(window, GLFW_KEY_DOWN) != GLFW_PRESS))
+	{
+		player1->position = player1->position + (glm::vec2(cos(currentRotation), sin(currentRotation)) * (moveVelocity * (float)tDelta));
+		moveVelocity = moveVelocity - (4.5f * (float)tDelta);
+
+		if (moveVelocity < 0.0f)
+		{
+			moveVelocity = 0.0f;
+		}
+	}
 }
+
 
 
 
