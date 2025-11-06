@@ -3,6 +3,8 @@
 #include <bitset>
 #include <complex>
 
+using namespace std;
+
 
 // Function prototypes
 
@@ -54,17 +56,18 @@ int main(void)
 void myUpdateScene(GLFWwindow* window, double tDelta) 
 {
 	// add update code here
-	const float thetaVelocity = glm::radians(360.0f); // 90 degrees stored as radians
+	constexpr float thetaVelocity = glm::radians(360.0f); // 360 degrees stored as radians
 	static float currentRotation = 0;
 	static int upLast = 1;
 	const int max = 5;
 	static float moveVelocity = 0.0f;
 
 	GameObject2D* player1 = getObject("player1");
+	complex<float> i = complex<float>(0.0f, 1.0f);
+	complex<float> rotation = exp(i * (player1->orientation));
 
-	std::complex<float> rotation = exp(player1->orientation);
 
-	printf("real %f imaginary %f", rotation.real(), rotation.imag());
+	//printf("orientation: %f real %f imaginary %f\n", player1->orientation, rotation.real(), rotation.imag());
 
 	if (keys.test(Key::LEFT) == true)
 	{
