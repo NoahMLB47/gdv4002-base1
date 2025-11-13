@@ -19,12 +19,13 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 const float pi = 3.141593f;
 
 std::bitset<5> keys{ 0x0 };
+glm::vec2 gravity = glm::vec2(0.0f, -1.0f);
 
 int main(void) 
 {
 
 	// Initialise the engine (create window, setup OpenGL backend)
-	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 7.5f);
+	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 5.0f);
 
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
