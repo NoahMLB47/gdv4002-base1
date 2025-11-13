@@ -1,14 +1,16 @@
 #include "Engine.h"
 #include "Keys.h"
+#include "Player.h"
+#include "Enemy.h"
 #include <bitset>
 #include <complex>
 
-using namespace std;
+using std::complex;
 
 
 // Function prototypes
 
-void myUpdateScene(GLFWwindow* window, double tDelta);
+//void myUpdateScene(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 //float setCurrentRotation(float);
 
@@ -35,8 +37,20 @@ int main(void)
 	// Setup game scene objects here
 	//
 
-	addObject("player1", glm::vec2(1, 1), 45 * (pi/180), glm::vec2(0.5, 0.25), "Resources\\Textures\\ship2.png", TextureProperties::NearestFilterTexture());
-	setUpdateFunction(myUpdateScene);
+	GLuint playerTexture = loadTexture("Resources\\Textures\\ship2.png");
+	GLuint enemyTexture = loadTexture("Resources\\Textures\\alien01.png");
+	
+	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), playerTexture, 1.0f);
+	Enemy* enemy1 = new Enemy(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	Enemy* enemy2 = new Enemy(glm::vec2(1.0f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
+	Enemy* enemy3 = new Enemy(glm::vec2(2.0f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
+	
+	addObject("player", player1);
+	addObject("enemy1", enemy1);
+	addObject("enemy2", enemy2);
+	addObject("enemy3", enemy3);
+
+	//setUpdateFunction(myUpdateScene);
 	setKeyboardHandler(myKeyboardHandler);
 
 	//initialise keyboard input
@@ -53,72 +67,6 @@ int main(void)
 	return 0;
 }
 
-void myUpdateScene(GLFWwindow* window, double tDelta) 
-{
-	// add update code here
-	constexpr float thetaVelocity = glm::radians(360.0f); // 360 degrees stored as radians
-	static float currentRotation = 0;
-	static int upLast = 1;
-	const int max = 5;
-	static float moveVelocity = 0.0f;
-
-	GameObject2D* player1 = getObject("player1");
-	complex<float> i = complex<float>(0.0f, 1.0f);
-	complex<float> rotation = exp(i * (player1->orientation));
-
-
-	//printf("orientation: %f real %f imaginary %f\n", player1->orientation, rotation.real(), rotation.imag());
-
-	if (keys.test(Key::LEFT) == true)
-	{
-		player1->orientation += thetaVelocity * (float)tDelta;
-	}
-
-	if (keys.test(Key::RIGHT) == true)
-	{
-		player1->orientation -= thetaVelocity * (float)tDelta;
-	}
-
-	if (keys.test(Key::UP) == true)
-	{
-		currentRotation = player1->orientation;
-		upLast = 1;
-		moveVelocity = moveVelocity + (3.0f * (float)tDelta);
-
-		if (moveVelocity > max)
-			moveVelocity = max;
-		
-		//moveVelocity = moveVelocity + 0.1f;
-		player1->position.x += rotation.real() * moveVelocity * (float)tDelta;
-		player1->position.y += rotation.imag() * moveVelocity * (float)tDelta;
-	}
-
-	if (keys.test(Key::DOWN) == true)
-	{
-		currentRotation = player1->orientation;
-		upLast = 0;
-		moveVelocity = moveVelocity + (3.0f * (float)tDelta);
-
-		if (moveVelocity > max)
-			moveVelocity = max;
-		
-		player1->position -= (glm::vec2(cos(player1->orientation), sin(player1->orientation)) * (moveVelocity * (float)tDelta));
-	}
-
-	if (keys.test(Key::UP) == false && keys.test(Key::DOWN) == false)
-	{
-		if (upLast == 1)
-			player1->position += (glm::vec2(cos(currentRotation), sin(currentRotation)) * (moveVelocity * (float)tDelta));
-		else
-			player1->position -= (glm::vec2(cos(currentRotation), sin(currentRotation)) * (moveVelocity * (float)tDelta));
-		moveVelocity = moveVelocity - (4.5f * (float)tDelta);
-
-		if (moveVelocity < 0.0f)
-		{
-			moveVelocity = 0.0f;
-		}
-	}
-}
 
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
