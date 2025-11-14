@@ -50,7 +50,7 @@ void Player::update(double tDelta) {
 		currentRotation = orientation;
 		//upLast = 1;
 		
-		F += glm::vec2(rotation.real(), rotation.imag() * thrust);
+		F += glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
 	}
 	
 	if (keys.test(Key::DOWN) == true)
@@ -58,7 +58,7 @@ void Player::update(double tDelta) {
 		currentRotation = orientation;
 		//upLast = 0;
 		
-		F -= glm::vec2(rotation.real(), rotation.imag() * thrust);
+		F -= glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
 	}
 
 	//F += gravity;
