@@ -66,25 +66,25 @@ void Player::update(double tDelta) {
 	//check if ship hits bottom of screen
 	if (position.y < (-getViewplaneHeight() - 0.5f) / 2.0f) {
 
-		position.y = position.y + 5.0f;
+		position.y = position.y + getViewplaneHeight();
 	}
 
 	//check if ship hits top of screen
 	if (position.y > (getViewplaneHeight() + 0.5f) / 2.0f) {
 
-		position.y = position.y - 5.0f;
+		position.y = position.y - getViewplaneHeight();
 	}
 
 	//check if ship hits left of screen
 	if (position.x < (-getViewplaneWidth() - 0.5f) / 2.0f) {
 
-		position.x = position.x + 5.0f;
+		position.x = position.x + getViewplaneHeight();
 	}
 
 	//check if ship hits right of screen
 	if (position.x > (getViewplaneWidth() + 0.5f) / 2.0f) {
 
-		position.x = position.x - 5.0f;
+		position.x = position.x - getViewplaneHeight();
 	}
 
 
@@ -98,6 +98,6 @@ void Player::update(double tDelta) {
 	position = position + (velocity * (float)tDelta);
 
 	// print velocity every frame (debug)
-	cout << "Velocity: (" << velocity.x << ", " << velocity.y << ")\n";
+	//cout << "Velocity: (" << velocity.x << ", " << velocity.y << ")\n";
 }
 

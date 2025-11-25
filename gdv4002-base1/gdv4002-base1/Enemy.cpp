@@ -1,4 +1,10 @@
 #include "Enemy.h"
+#include "Engine.h"
+#include <complex>
+
+using std::complex;
+
+const float moveSpeed = 2.0f;
 
 Enemy::Enemy(
 	glm::vec2 initPosition,
@@ -13,11 +19,13 @@ Enemy::Enemy(
 	phaseVelocity = initialPhaseVelocity;
 }
 
+
 void Enemy::update(double tDelta) {
 
-	// Set position based on phaseAngle
-	position.y = sinf(phaseAngle);
+	complex<float> i = complex<float>(0.0f, 1.0f);
+	complex<float> rotation = exp(i * (orientation));
 
-	// Update phaseAngle based on velocity * time elapsed
-	phaseAngle += phaseVelocity * tDelta;
+	position.x += moveSpeed * rotation.real() * tDelta;
+	position.y += moveSpeed * rotation.imag() * tDelta;
+
 }

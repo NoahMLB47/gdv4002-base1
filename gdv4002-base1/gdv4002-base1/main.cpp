@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include <bitset>
 #include <complex>
+#include <random>
 
 using std::complex;
 
@@ -16,6 +17,10 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 
 //void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
+float randomX();
+float randomY();
+float randomRotation();
+
 const float pi = 3.141593f;
 
 std::bitset<5> keys{ 0x0 };
@@ -25,7 +30,7 @@ int main(void)
 {
 
 	// Initialise the engine (create window, setup OpenGL backend)
-	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 5.0f);
+	int initResult = engineInit("GDV4002 - Applied Maths for Games", 1024, 1024, 10.0f);
 
 	// If the engine initialisation failed report error and exit
 	if (initResult != 0) {
@@ -39,12 +44,12 @@ int main(void)
 	//
 
 	GLuint playerTexture = loadTexture("Resources\\Textures\\ship2.png");
-	GLuint enemyTexture = loadTexture("Resources\\Textures\\alien01.png");
+	GLuint enemyTexture = loadTexture("Resources\\Textures\\asteroid.png");
 	
 	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), playerTexture, 1.0f);
-	Enemy* enemy1 = new Enemy(glm::vec2(0.0f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
-	Enemy* enemy2 = new Enemy(glm::vec2(1.0f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
-	Enemy* enemy3 = new Enemy(glm::vec2(2.0f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
+	Enemy* enemy1 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	Enemy* enemy2 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
+	Enemy* enemy3 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
 	
 	addObject("player", player1);
 	addObject("enemy1", enemy1);
@@ -117,4 +122,33 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 
 		// handle key release events
 	}
+}
+
+// remember to reference!!!
+std::mt19937& getRandomEngine()
+{
+	static std::random_device rd;
+	static std::mt19937 engine(rd());
+	return engine;
+}
+
+float randomX()
+{
+	std::uniform_real_distribution<float> distribution(-getViewplaneWidth() / 2.0f, getViewplaneWidth()/2.0f);
+
+	return distribution(getRandomEngine());
+}
+
+float randomY()
+{
+	std::uniform_real_distribution<float> distribution(-getViewplaneHeight() / 2.0f, getViewplaneHeight() / 2.0f);
+
+	return distribution(getRandomEngine());
+}
+
+float randomRotation()
+{
+	std::uniform_real_distribution<float> distribution(0.0f, 360.0f);
+
+	return distribution(getRandomEngine());
 }
