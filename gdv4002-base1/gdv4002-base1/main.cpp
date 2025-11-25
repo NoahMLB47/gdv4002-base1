@@ -10,12 +10,8 @@ using std::complex;
 
 
 // Function prototypes
-
-//void myUpdateScene(GLFWwindow* window, double tDelta);
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-//float setCurrentRotation(float);
 
-//void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 float randomX();
 float randomY();
@@ -24,7 +20,6 @@ float randomRotation();
 const float pi = 3.141593f;
 
 std::bitset<5> keys{ 0x0 };
-glm::vec2 gravity = glm::vec2(0.0f, -1.0f);
 
 int main(void) 
 {
@@ -46,7 +41,7 @@ int main(void)
 	GLuint playerTexture = loadTexture("Resources\\Textures\\ship2.png");
 	GLuint enemyTexture = loadTexture("Resources\\Textures\\asteroid.png");
 	
-	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.5f, 0.5f), playerTexture, 1.0f);
+	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);
 	Enemy* enemy1 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
 	Enemy* enemy2 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
 	Enemy* enemy3 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
@@ -56,12 +51,9 @@ int main(void)
 	addObject("enemy2", enemy2);
 	addObject("enemy3", enemy3);
 
-	//setUpdateFunction(myUpdateScene);
+	//initialise keyboard input
 	setKeyboardHandler(myKeyboardHandler);
 
-	//initialise keyboard input
-
-	//setKeyboardHandler(myKeyboardHandler);
 
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();

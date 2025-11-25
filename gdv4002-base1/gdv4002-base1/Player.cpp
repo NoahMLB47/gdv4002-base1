@@ -9,7 +9,9 @@ using std::complex;
 using std::cout;
 
 extern std::bitset<5> keys;
-extern glm::vec2 gravity;
+
+const float EPS = 0.1f;
+
 
 Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass) : GameObject2D(initPosition, initOrientation, initSize, initTextureID) {
 
@@ -25,11 +27,12 @@ void Player::update(double tDelta) {
 
 	constexpr float thetaVelocity = glm::radians(360.0f); // 360 degrees stored as radians
 	static float currentRotation = 0;
-	//static int upLast = 1;
-	const int MAX_VELOCITY = 5;
-	
+	const float MAX_VELOCITY = 5.0f;
+
 	complex<float> i = complex<float>(0.0f, 1.0f);
 	complex<float> rotation = exp(i * (orientation));
+
+	glm::vec2 drag = glm::vec2(-velocity.x, -velocity.y);
 	
 	//printf("orientation: %f real %f imaginary %f\n", player1->orientation, rotation.real(), rotation.imag());
 	// 
@@ -48,7 +51,6 @@ void Player::update(double tDelta) {
 	if (keys.test(Key::UP) == true)
 	{
 		currentRotation = orientation;
-		//upLast = 1;
 		
 		F += glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
 	}
@@ -56,12 +58,20 @@ void Player::update(double tDelta) {
 	if (keys.test(Key::DOWN) == true)
 	{
 		currentRotation = orientation;
-		//upLast = 0;
 		
 		F -= glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
 	}
 
-	//F += gravity;
+	if (keys.test(Key::UP) == false && keys.test(Key::DOWN) == false)
+	{
+		velocity.x += drag.x * (float)tDelta;
+		if (velocity.x < EPS && velocity.x > -EPS)
+			velocity.x = 0.0f;
+
+		velocity.y += drag.y * (float)tDelta;
+		if (velocity.y < EPS && velocity.y > -EPS)
+			velocity.y = 0.0f;
+	}
 
 	//check if ship hits bottom of screen
 	if (position.y < (-getViewplaneHeight() - 0.5f) / 2.0f) {
@@ -91,13 +101,24 @@ void Player::update(double tDelta) {
 	// 2. calculate acceleration.  If f=ma, a = f/m
 	glm::vec2 a = F / mass;
 
+	if (keys.test(Key::UP) == false && keys.test(Key::DOWN) == false)
+	{
+		F += drag * (float)tDelta;
+	}
+
 	// 3. integate to get new velocity
 	velocity = velocity + (a * (float)tDelta);
 
 	// 4. integrate to get new position
 	position = position + (velocity * (float)tDelta);
 
+
 	// print velocity every frame (debug)
 	//cout << "Velocity: (" << velocity.x << ", " << velocity.y << ")\n";
+
+	// print force every frame (debug)
+	//cout << "Force: (" << F.x << ", " << F.y << ")\n";
+
+	
 }
 
