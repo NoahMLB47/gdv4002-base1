@@ -3,8 +3,11 @@
 #include "GameObject2D.h"
 #include <complex>
 #include <random>
+#include <iostream>
 
 using std::complex;
+using std::cout;
+using std::endl;
 
 
 const float moveSpeed = 2.0f;
@@ -25,11 +28,12 @@ Enemy::Enemy(
 
 void Enemy::update(double tDelta) {
 
-	/*complex<float> i = complex<float>(0.0f, 1.0f);
-	complex<float> rotation = exp(i * (orientation));*/
+	cout << "orientation: " << orientation << endl;
+	complex<float> i = complex<float>(0.0f, 1.0f);
+	complex<float> rotation = exp(i * (orientation));
 
-	position.x += moveSpeed * orientation->x * (float)tDelta;
-	position.y += moveSpeed * orientation->y * (float)tDelta;
+	position.x += moveSpeed * cosf(orientation) * (float)tDelta;
+	position.y += moveSpeed * sinf(orientation) * (float)tDelta;
 
 }
 
@@ -46,12 +50,12 @@ float Enemy::randomRotation(glm::vec2 position)
 	if (position.x < 0.0f)
 	{
 		std::uniform_real_distribution<float> distribution(-90.0f, 90.0f);
-		return distribution(getRandomEngine2());
+		return glm::radians(distribution(getRandomEngine2()));
 	}
 
 	else
 	{
 		std::uniform_real_distribution<float> distribution(90.0f, 270.0f);
-		return distribution(getRandomEngine2());
+		return glm::radians(distribution(getRandomEngine2()));
 	}
 }

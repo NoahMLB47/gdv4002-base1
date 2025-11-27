@@ -44,14 +44,14 @@ int main(void)
 	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);
 
 	glm::vec2 pos = glm::vec2(randomX(), randomY());
-	Enemy* enemy1 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
-	Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
-	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
+	Enemy* enemy1 = new Enemy(glm::vec2(randomX(), randomY()), Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	/*Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
+	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));*/
 	
 	addObject("player", player1);
 	addObject("enemy1", enemy1);
-	addObject("enemy2", enemy2);
-	addObject("enemy3", enemy3);
+	//addObject("enemy2", enemy2);
+	//addObject("enemy3", enemy3);
 
 	//initialise keyboard input
 	setKeyboardHandler(myKeyboardHandler);
