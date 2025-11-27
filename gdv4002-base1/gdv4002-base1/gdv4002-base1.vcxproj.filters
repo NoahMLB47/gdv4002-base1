@@ -48,6 +48,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>My Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>My Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -78,6 +81,9 @@
       <Filter>My Classes</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>My Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
       <Filter>My Classes</Filter>
     </ClInclude>
   </ItemGroup>

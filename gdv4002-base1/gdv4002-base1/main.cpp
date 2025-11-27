@@ -43,8 +43,8 @@ int main(void)
 	
 	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);
 
-	glm::vec2 pos = glm::vec2(randomX(), randomY());
-	Enemy* enemy1 = new Enemy(glm::vec2(randomX(), randomY()), Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	glm::vec2 pos = glm::vec2(-1.0f, randomY());
+	Enemy* enemy1 = new Enemy(pos /*glm::vec2(randomX(), randomY())*/, 0.0f /*Enemy::randomRotation(pos)*/, glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
 	/*Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
 	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));*/
 	
@@ -92,6 +92,9 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 		case GLFW_KEY_RIGHT:
 			keys[Key::RIGHT] = true;
 			break;
+		case GLFW_KEY_SPACE:
+			keys[Key::SPACE] = true;
+			break;
 		}
 		
 	}
@@ -111,6 +114,9 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 			break;
 		case GLFW_KEY_RIGHT:
 			keys[Key::RIGHT] = false;
+			break;
+		case GLFW_KEY_SPACE:
+			keys[Key::SPACE] = false;
 			break;
 		}
 

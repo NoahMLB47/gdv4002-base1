@@ -67,7 +67,7 @@ GLuint fiLoadTexture(const char *filename, const TextureProperties properties) {
 
 	glGenTextures(1, &newTexture);
 	glBindTexture(GL_TEXTURE_2D, newTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, properties.internalFormat, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, buffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, buffer);
 
 	// Setup default texture properties
 	if (newTexture) {

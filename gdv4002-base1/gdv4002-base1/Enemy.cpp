@@ -28,12 +28,13 @@ Enemy::Enemy(
 
 void Enemy::update(double tDelta) {
 
-	cout << "orientation: " << orientation << endl;
+	//print orientation for debug
+	//cout << "orientation: " << orientation << endl;
 	complex<float> i = complex<float>(0.0f, 1.0f);
 	complex<float> rotation = exp(i * (orientation));
 
-	position.x += moveSpeed * cosf(orientation) * (float)tDelta;
-	position.y += moveSpeed * sinf(orientation) * (float)tDelta;
+	position.x += moveSpeed * rotation.real() * (float)tDelta;
+	position.y += moveSpeed * rotation.imag() * (float)tDelta;
 
 }
 

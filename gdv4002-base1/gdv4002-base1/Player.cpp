@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Keys.h"
 #include "Engine.h"
+#include "Bullet.h"
 #include <bitset>
 #include <complex>
 #include <iostream>
@@ -12,6 +13,7 @@ extern std::bitset<5> keys;
 
 const float EPS = 0.1f;
 
+//GLuint bulletTexture = loadTexture("Resources\\Textures\\bullet.png");
 
 Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass) : GameObject2D(initPosition, initOrientation, initSize, initTextureID) {
 
@@ -73,6 +75,12 @@ void Player::update(double tDelta) {
 			velocity.y = 0.0f;
 	}
 
+	if (keys.test(Key::SPACE) == true)
+	{
+		Bullet* bullet = new Bullet(glm::vec2(this->position.x + size.x / 2.0f, this->position.y), orientation, glm::vec2(0.1f, 0.05f), loadTexture("Resources\\Textures\\bullet.png"));
+		addObject("bullet1", bullet);
+	}
+
 	//check if ship hits bottom of screen
 	if (position.y < (-getViewplaneHeight() - 0.5f) / 2.0f) {
 
@@ -121,4 +129,3 @@ void Player::update(double tDelta) {
 
 	
 }
-
