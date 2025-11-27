@@ -1,8 +1,11 @@
 #include "Enemy.h"
 #include "Engine.h"
+#include "GameObject2D.h"
 #include <complex>
+#include <random>
 
 using std::complex;
+
 
 const float moveSpeed = 2.0f;
 
@@ -22,10 +25,33 @@ Enemy::Enemy(
 
 void Enemy::update(double tDelta) {
 
-	complex<float> i = complex<float>(0.0f, 1.0f);
-	complex<float> rotation = exp(i * (orientation));
+	/*complex<float> i = complex<float>(0.0f, 1.0f);
+	complex<float> rotation = exp(i * (orientation));*/
 
-	position.x += moveSpeed * rotation.real() * tDelta;
-	position.y += moveSpeed * rotation.imag() * tDelta;
+	position.x += moveSpeed * orientation->x * (float)tDelta;
+	position.y += moveSpeed * orientation->y * (float)tDelta;
 
+}
+
+// remember to reference!!!
+std::mt19937& Enemy::getRandomEngine2()
+{
+	static std::random_device rd;
+	static std::mt19937 engine(rd());
+	return engine;
+}
+
+float Enemy::randomRotation(glm::vec2 position)
+{
+	if (position.x < 0.0f)
+	{
+		std::uniform_real_distribution<float> distribution(-90.0f, 90.0f);
+		return distribution(getRandomEngine2());
+	}
+
+	else
+	{
+		std::uniform_real_distribution<float> distribution(90.0f, 270.0f);
+		return distribution(getRandomEngine2());
+	}
 }

@@ -15,7 +15,7 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 
 float randomX();
 float randomY();
-float randomRotation();
+//float randomRotation();
 
 const float pi = 3.141593f;
 
@@ -42,9 +42,11 @@ int main(void)
 	GLuint enemyTexture = loadTexture("Resources\\Textures\\asteroid.png");
 	
 	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);
-	Enemy* enemy1 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
-	Enemy* enemy2 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
-	Enemy* enemy3 = new Enemy(glm::vec2(randomX(), randomY()), randomRotation(), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
+
+	glm::vec2 pos = glm::vec2(randomX(), randomY());
+	Enemy* enemy1 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
+	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
 	
 	addObject("player", player1);
 	addObject("enemy1", enemy1);
@@ -134,13 +136,6 @@ float randomX()
 float randomY()
 {
 	std::uniform_real_distribution<float> distribution(-getViewplaneHeight() / 2.0f, getViewplaneHeight() / 2.0f);
-
-	return distribution(getRandomEngine());
-}
-
-float randomRotation()
-{
-	std::uniform_real_distribution<float> distribution(0.0f, 360.0f);
 
 	return distribution(getRandomEngine());
 }
