@@ -38,7 +38,7 @@ int main(void)
 	// Setup game scene objects here
 	//
 
-	GLuint playerTexture = loadTexture("Resources\\Textures\\ship2.png");
+	GLuint playerTexture = loadTexture("Resources\\Textures\\shipNoFlame.png");
 	GLuint enemyTexture = loadTexture("Resources\\Textures\\asteroid.png");
 	
 	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);

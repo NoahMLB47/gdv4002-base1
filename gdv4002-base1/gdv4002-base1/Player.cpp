@@ -60,6 +60,8 @@ void Player::update(double tDelta) {
 		currentRotation = orientation;
 		
 		F += glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
+
+		textureID = loadTexture("Resources\\Textures\\ship2.png");
 	}
 	
 	if (keys.test(Key::DOWN) == true)
@@ -67,10 +69,14 @@ void Player::update(double tDelta) {
 		currentRotation = orientation;
 		
 		F -= glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
+
+		textureID = loadTexture("Resources\\Textures\\ship2.png");
 	}
 
 	if (keys.test(Key::UP) == false && keys.test(Key::DOWN) == false)
 	{
+		textureID = loadTexture("Resources\\Textures\\shipNoFlame.png");
+		
 		velocity.x += drag.x * (float)tDelta;
 		if (velocity.x < EPS && velocity.x > -EPS)
 			velocity.x = 0.0f;
