@@ -8,6 +8,7 @@
 
 using std::complex;
 using std::cout;
+using std::endl;
 
 extern std::bitset<5> keys;
 
@@ -19,6 +20,10 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 
 	this->mass = mass;
 	velocity = glm::vec2(0.0f, 0.0f); // default to 0 velocity
+	bulletCooldown = 0.0f;
+	fireRate = 0.5f;
+
+	canFire = true;
 }
 
 void Player::update(double tDelta) {
@@ -75,10 +80,17 @@ void Player::update(double tDelta) {
 			velocity.y = 0.0f;
 	}
 
-	if (keys.test(Key::SPACE) == true)
+	if (bulletCooldown > 0.0f)
+		bulletCooldown -= static_cast<float>(tDelta);
+	else
+		canFire = true;
+
+	if (keys.test(Key::SPACE) == true && canFire == true)
 	{
-		Bullet* bullet = new Bullet(glm::vec2(this->position.x + size.x / 2.0f, this->position.y), orientation, glm::vec2(0.1f, 0.05f), loadTexture("Resources\\Textures\\bullet.png"));
+		canFire = false;
+		Bullet* bullet = new Bullet(glm::vec2(this->position.x , this->position.y), orientation, glm::vec2(0.1f, 0.05f), loadTexture("Resources\\Textures\\bullet.png"));
 		addObject("bullet1", bullet);
+		bulletCooldown = fireRate;
 	}
 
 	//check if ship hits bottom of screen
@@ -127,5 +139,6 @@ void Player::update(double tDelta) {
 	// print force every frame (debug)
 	//cout << "Force: (" << F.x << ", " << F.y << ")\n";
 
-	
+	// print bulletCooldown every frame (debug)
+	cout << "cooldown:" << bulletCooldown << endl;
 }
