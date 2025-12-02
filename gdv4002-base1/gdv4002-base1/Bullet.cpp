@@ -6,6 +6,8 @@ Bullet::Bullet(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 	moveSpeed = 5.0f;
 }
 
+
+
 void Bullet::update(double tDelta)
 {
 	position.x += moveSpeed * velocity.x * (float)tDelta;

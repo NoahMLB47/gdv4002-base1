@@ -5,6 +5,7 @@
 #include <bitset>
 #include <complex>
 #include <iostream>
+#include <string>
 
 using std::complex;
 using std::cout;
@@ -22,6 +23,8 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 	velocity = glm::vec2(0.0f, 0.0f); // default to 0 velocity
 	bulletCooldown = 0.0f;
 	fireRate = 0.5f;
+	bulletNumber = 1;
+	std::string key = std::string("bullet");
 
 	canFire = true;
 }
@@ -95,8 +98,10 @@ void Player::update(double tDelta) {
 	{
 		canFire = false;
 		Bullet* bullet = new Bullet(glm::vec2(this->position.x , this->position.y), orientation, glm::vec2(0.1f, 0.05f), loadTexture("Resources\\Textures\\bullet.png"));
-		addObject("bullet1", bullet);
+		addObject(key.c_str(), bullet);
 		bulletCooldown = fireRate;
+
+		addBulletNumber();
 	}
 
 	//check if ship hits bottom of screen
@@ -147,4 +152,12 @@ void Player::update(double tDelta) {
 
 	// print bulletCooldown every frame (debug)
 	cout << "cooldown:" << bulletCooldown << endl;
+}
+
+//add number to bullet
+void Player::addBulletNumber()
+{
+	if (bulletNumber > 0)
+		key += std::to_string(bulletNumber);
+	bulletNumber++;
 }
