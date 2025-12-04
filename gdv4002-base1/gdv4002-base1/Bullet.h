@@ -10,4 +10,5 @@ private:
 public:
 	Bullet(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID);
 	void update(double tDelta) override;
+
 };

@@ -24,7 +24,7 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 	bulletCooldown = 0.0f;
 	fireRate = 0.5f;
 	bulletNumber = 1;
-	std::string key = std::string("bullet");
+	key = std::string("bullet");
 
 	canFire = true;
 }
@@ -151,7 +151,7 @@ void Player::update(double tDelta) {
 	//cout << "Force: (" << F.x << ", " << F.y << ")\n";
 
 	// print bulletCooldown every frame (debug)
-	cout << "cooldown:" << bulletCooldown << endl;
+	//cout << "cooldown:" << bulletCooldown << endl;
 }
 
 //add number to bullet

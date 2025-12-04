@@ -2,6 +2,7 @@
 #include "Keys.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Bullet.h"
 #include <bitset>
 #include <complex>
 #include <random>
@@ -11,7 +12,9 @@ using std::complex;
 
 // Function prototypes
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-
+void deleteBullet(GLFWwindow* window, double tDelta);
+void deleteAsteroid(GLFWwindow* window, double tDelta);
+void addAsteroidNumber();
 
 float randomX();
 float randomY();
@@ -42,22 +45,25 @@ int main(void)
 	GLuint enemyTexture = loadTexture("Resources\\Textures\\asteroid.png");
 	
 	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);
+	addObject("player", player1);
 
 	glm::vec2 pos = glm::vec2(randomX(), randomY());
 	Enemy* enemy1 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	addObject("enemy1", enemy1);
+
 	pos = glm::vec2(randomX(), randomY());
 	Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
+	addObject("enemy2", enemy2);
+
 	pos = glm::vec2(randomX(), randomY());
 	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
-	
-	addObject("player", player1);
-	addObject("enemy1", enemy1);
-	addObject("enemy2", enemy2);
 	addObject("enemy3", enemy3);
 
 	//initialise keyboard input
 	setKeyboardHandler(myKeyboardHandler);
 
+	setUpdateFunction(deleteBullet, false);
+	setUpdateFunction(deleteAsteroid, false);
 
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();
@@ -146,4 +152,29 @@ float randomY()
 	std::uniform_real_distribution<float> distribution(-getViewplaneHeight() / 2.0f, getViewplaneHeight() / 2.0f);
 
 	return distribution(getRandomEngine());
+}
+
+void deleteBullet(GLFWwindow* window, double tDelta) {
+
+	GameObjectCollection bullet = getObjectCollection("bullet");
+
+	for (int i = 0; i < bullet.objectCount; i++) {
+
+		if (bullet.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f)
+			|| bullet.objectArray[i]->position.y >(getViewplaneHeight() / 2.0f)
+			|| bullet.objectArray[i]->position.x > (getViewplaneWidth() / 2.0f)
+			|| bullet.objectArray[i]->position.x < -(getViewplaneWidth() / 2.0f))
+		{
+
+			deleteObject(bullet.objectArray[i]);
+			std::cout << "Bullet deleted" << std::endl;
+		}
+	}
+}
+
+void addAsteroidNumber()
+{
+	if (bulletNumber > 0)
+		key += std::to_string(bulletNumber);
+	bulletNumber++;
 }

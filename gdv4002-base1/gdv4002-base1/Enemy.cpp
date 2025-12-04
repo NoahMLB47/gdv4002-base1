@@ -23,6 +23,7 @@ Enemy::Enemy(
 
 	phaseAngle = initialPhase;
 	phaseVelocity = initialPhaseVelocity;
+	asteroidCount = 3;
 }
 
 
@@ -36,6 +37,11 @@ void Enemy::update(double tDelta) {
 	position.x += moveSpeed * rotation.real() * (float)tDelta;
 	position.y += moveSpeed * rotation.imag() * (float)tDelta;
 
+	if (asteroidCount < 3)
+	{
+		
+		Enemy* asteroid = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f)))
+	}
 }
 
 // remember to reference!!!
