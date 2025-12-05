@@ -157,7 +157,9 @@ void Player::update(double tDelta) {
 //add number to bullet
 void Player::addBulletNumber()
 {
+	key = "bullet";
 	if (bulletNumber > 0)
 		key += std::to_string(bulletNumber);
+	//cout << key << endl;
 	bulletNumber++;
 }

@@ -6,15 +6,14 @@
 #include <bitset>
 #include <complex>
 #include <random>
+#include <iostream>
 
 using std::complex;
 
 
 // Function prototypes
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
-void deleteBullet(GLFWwindow* window, double tDelta);
-void deleteAsteroid(GLFWwindow* window, double tDelta);
-void addAsteroidNumber();
+void deleteObjects(GLFWwindow* window, double tDelta);
 
 float randomX();
 float randomY();
@@ -47,23 +46,31 @@ int main(void)
 	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);
 	addObject("player", player1);
 
-	glm::vec2 pos = glm::vec2(randomX(), randomY());
-	Enemy* enemy1 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
-	addObject("enemy1", enemy1);
+	glm::vec2 pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
+	Enemy* enemy = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	addObject("asteroid", enemy);
 
-	pos = glm::vec2(randomX(), randomY());
-	Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
-	addObject("enemy2", enemy2);
+	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
+	Enemy* enemy1 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
+	addObject("asteroid1", enemy1);
 
-	pos = glm::vec2(randomX(), randomY());
+	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
+	Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
+	addObject("asteroid2", enemy2);
+
+	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
 	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
-	addObject("enemy3", enemy3);
+	addObject("asteroid3", enemy3);
+	
+	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
+	Enemy* enemy4= new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
+	addObject("asteroid4", enemy4);
 
 	//initialise keyboard input
 	setKeyboardHandler(myKeyboardHandler);
 
-	setUpdateFunction(deleteBullet, false);
-	setUpdateFunction(deleteAsteroid, false);
+	setUpdateFunction(deleteObjects, false);
+	//setUpdateFunction(deleteAsteroid, false);
 
 	// Enter main loop - this handles update and render calls
 	engineMainLoop();
@@ -140,23 +147,11 @@ std::mt19937& getRandomEngine()
 	return engine;
 }
 
-float randomX()
-{
-	std::uniform_real_distribution<float> distribution(-getViewplaneWidth() / 2.0f, getViewplaneWidth()/2.0f);
-
-	return distribution(getRandomEngine());
-}
-
-float randomY()
-{
-	std::uniform_real_distribution<float> distribution(-getViewplaneHeight() / 2.0f, getViewplaneHeight() / 2.0f);
-
-	return distribution(getRandomEngine());
-}
-
-void deleteBullet(GLFWwindow* window, double tDelta) {
+void deleteObjects(GLFWwindow* window, double tDelta) {
 
 	GameObjectCollection bullet = getObjectCollection("bullet");
+
+	//std::cout << bullet.objectCount << std::endl;
 
 	for (int i = 0; i < bullet.objectCount; i++) {
 
@@ -170,11 +165,20 @@ void deleteBullet(GLFWwindow* window, double tDelta) {
 			std::cout << "Bullet deleted" << std::endl;
 		}
 	}
-}
 
-void addAsteroidNumber()
-{
-	if (bulletNumber > 0)
-		key += std::to_string(bulletNumber);
-	bulletNumber++;
+	GameObjectCollection asteroid = getObjectCollection("asteroid");
+
+	for (int i = 0; i < asteroid.objectCount; i++) {
+
+		if (asteroid.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f)
+			|| asteroid.objectArray[i]->position.y >(getViewplaneHeight() / 2.0f)
+			|| asteroid.objectArray[i]->position.x > (getViewplaneWidth() / 2.0f)
+			|| asteroid.objectArray[i]->position.x < -(getViewplaneWidth() / 2.0f))
+		{
+
+			deleteObject(asteroid.objectArray[i]);
+			//std::cout << "Asteroid deleted" << std::endl;
+			Enemy::addAsteroid();
+		}
+	}
 }
