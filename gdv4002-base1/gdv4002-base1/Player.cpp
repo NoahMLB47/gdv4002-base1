@@ -2,6 +2,7 @@
 #include "Keys.h"
 #include "Engine.h"
 #include "Bullet.h"
+#include "Collision.h"
 #include <bitset>
 #include <complex>
 #include <iostream>
@@ -127,7 +128,6 @@ void Player::update(double tDelta) {
 
 		position.x = position.x - getViewplaneHeight();
 	}
-
 
 	// 2. calculate acceleration.  If f=ma, a = f/m
 	glm::vec2 a = F / mass;
