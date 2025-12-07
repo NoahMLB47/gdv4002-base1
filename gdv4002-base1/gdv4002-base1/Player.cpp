@@ -16,6 +16,9 @@ extern std::bitset<5> keys;
 
 const float EPS = 0.1f;
 
+int Player::bulletNumber = 1;
+std::string Player::key = "bullet";
+
 //GLuint bulletTexture = loadTexture("Resources\\Textures\\bullet.png");
 
 Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass) : GameObject2D(initPosition, initOrientation, initSize, initTextureID) {
@@ -24,8 +27,6 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 	velocity = glm::vec2(0.0f, 0.0f); // default to 0 velocity
 	bulletCooldown = 0.0f;
 	fireRate = 0.5f;
-	bulletNumber = 1;
-	key = std::string("bullet");
 
 	canFire = true;
 }
@@ -98,11 +99,8 @@ void Player::update(double tDelta) {
 	if (keys.test(Key::SPACE) == true && canFire == true)
 	{
 		canFire = false;
-		Bullet* bullet = new Bullet(glm::vec2(this->position.x , this->position.y), orientation, glm::vec2(0.1f, 0.05f), loadTexture("Resources\\Textures\\bullet.png"));
-		addObject(key.c_str(), bullet);
+		Bullet::createBullet(key);
 		bulletCooldown = fireRate;
-
-		addBulletNumber();
 	}
 
 	//check if ship hits bottom of screen
@@ -157,9 +155,15 @@ void Player::update(double tDelta) {
 //add number to bullet
 void Player::addBulletNumber()
 {
-	key = "bullet";
+	//key = "bullet";
 	if (bulletNumber > 0)
 		key += std::to_string(bulletNumber);
-	//cout << key << endl;
+	cout << key << endl;
 	bulletNumber++;
+}
+
+void Player::resetBulletNumber()
+{
+	key = "bullet";
+	bulletNumber = 1;
 }

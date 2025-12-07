@@ -11,14 +11,16 @@ private:
 	float bulletCooldown;
 	float fireRate;
 
-	int bulletNumber;
+	static int bulletNumber;
 
 	bool canFire;
 
-	std::string key;
+	static std::string key;
 public:
 	Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float mass);
 	void update(double tDelta) override;
 
-	void addBulletNumber();
+	static void addBulletNumber();
+
+	static void resetBulletNumber();
 };

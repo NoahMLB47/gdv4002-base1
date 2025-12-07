@@ -152,6 +152,10 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 
 	GameObjectCollection bullet = getObjectCollection("bullet");
 
+	if (bullet.objectCount == 0)
+	{
+		Player::resetBulletNumber();
+	}
 	//std::cout << bullet.objectCount << std::endl;
 
 	for (int i = 0; i < bullet.objectCount; i++) {
@@ -188,33 +192,33 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 	// make player's box (GameObject2D::position is center; size is full width/height)
 	GameObject2D* player = getObject("player");
 
-	if(player)
-	{
-		Collision::Box pBox;
-		pBox.width = player->size.x;
-		pBox.height = player->size.y;
-		pBox.x = player->position.x - pBox.width * 0.5f;   // convert center -> top-left
-		pBox.y = player->position.y - pBox.height * 0.5f;
+	//if(player)
+	//{
+	//	Collision::Box pBox;
+	//	pBox.width = player->size.x;
+	//	pBox.height = player->size.y;
+	//	pBox.x = player->position.x - pBox.width * 0.5f;   // convert center -> top-left
+	//	pBox.y = player->position.y - pBox.height * 0.5f;
 
-		for (int i = 0; i < asteroid.objectCount; ++i)
-		{
-			GameObject2D* aObj = asteroid.objectArray[i];
-			if (!aObj) continue;
+	//	for (int i = 0; i < asteroid.objectCount; ++i)
+	//	{
+	//		GameObject2D* aObj = asteroid.objectArray[i];
+	//		if (!aObj) continue;
 
-			Collision::Box aBox;
-			aBox.width = aObj->size.x;
-			aBox.height = aObj->size.y;
-			aBox.x = aObj->position.x - aBox.width * 0.5f;
-			aBox.y = aObj->position.y - aBox.height * 0.5f;
+	//		Collision::Box aBox;
+	//		aBox.width = aObj->size.x;
+	//		aBox.height = aObj->size.y;
+	//		aBox.x = aObj->position.x - aBox.width * 0.5f;
+	//		aBox.y = aObj->position.y - aBox.height * 0.5f;
 
-			if (Collision::checkCollision(pBox, aBox))
-			{
-				// handle collision: example - delete asteroid and respawn
-				deleteObject("player");
-			}
+	//		if (Collision::checkCollision(pBox, aBox))
+	//		{
+	//			// handle collision: example - delete asteroid and respawn
+	//			deleteObject("player");
+	//		}
 
-		}
-	}
+	//	}
+	//}
 
 	// collision detection between bullet and asteroid
 
