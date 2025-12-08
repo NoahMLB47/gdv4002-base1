@@ -87,14 +87,34 @@ void Enemy::addAsteroidNumber()
 
 float Enemy::randomX()
 {
-	std::uniform_real_distribution<float> distribution(-getViewplaneWidth() / 2.0f, getViewplaneWidth() / 2.0f);
+	std::uniform_int_distribution<int> leftOrRight(0, 1);
+	int choice = leftOrRight(Enemy::getRandomEngine2());
+	if (choice == 0)
+	{
+		std::uniform_real_distribution<float> distribution(-getViewplaneWidth() / 2.0f, (- getViewplaneWidth() / 2.0f) + 0.15f * getViewplaneWidth());
 
-	return distribution(Enemy::getRandomEngine2());
+		return distribution(Enemy::getRandomEngine2());
+	}
+
+	else
+	{
+		std::uniform_real_distribution<float> distribution((getViewplaneWidth() / 2.0f) - 0.15f * getViewplaneWidth(), getViewplaneWidth() / 2.0f);
+	}
 }
 
 float Enemy::randomY()
 {
-	std::uniform_real_distribution<float> distribution(-getViewplaneHeight() / 2.0f, getViewplaneHeight() / 2.0f);
+	std::uniform_int_distribution<int> topOrBottom(0, 1);
+	int choice = topOrBottom(Enemy::getRandomEngine2());
+	if (choice == 0)
+	{
+		std::uniform_real_distribution<float> distribution(-getViewplaneHeight() / 2.0f, (-getViewplaneHeight() / 2.0f) + 0.15f * getViewplaneHeight());
 
-	return distribution(Enemy::getRandomEngine2());
+		return distribution(Enemy::getRandomEngine2());
+	}
+
+	else
+	{
+		std::uniform_real_distribution<float> distribution((getViewplaneHeight() / 2.0f) - 0.15f * getViewplaneHeight(), getViewplaneHeight() / 2.0f);
+	}
 }

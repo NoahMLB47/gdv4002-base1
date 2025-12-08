@@ -26,7 +26,7 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 	this->mass = mass;
 	velocity = glm::vec2(0.0f, 0.0f); // default to 0 velocity
 	bulletCooldown = 0.0f;
-	fireRate = 0.5f;
+	fireRate = 0.25f;
 
 	canFire = true;
 }
@@ -155,7 +155,7 @@ void Player::update(double tDelta) {
 //add number to bullet
 void Player::addBulletNumber()
 {
-	//key = "bullet";
+	key = "bullet";
 	if (bulletNumber > 0)
 		key += std::to_string(bulletNumber);
 	cout << key << endl;
