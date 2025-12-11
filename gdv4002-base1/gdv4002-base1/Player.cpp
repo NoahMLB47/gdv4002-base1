@@ -137,7 +137,6 @@ void Player::update(double tDelta) {
 
 	// 3. integate to get new velocity
 	velocity = velocity + (a * (float)tDelta);
-
 	// 4. integrate to get new position
 	position = position + (velocity * (float)tDelta);
 
