@@ -47,38 +47,34 @@ void Enemy::update(double tDelta) {
 	
 	GameObjectCollection asteroids = getObjectCollection("asteroid");
 
+	// Create circle for this asteroid
+	Collision::Circle circle1;
+	circle1.x = position.x;
+	circle1.y = position.y;
+	circle1.radius = size.x * 0.5f; // Use half of width as radius (assumes square/circular sprite)
+
+	glm::vec2 normal = glm::vec2(cosf(orientation), sinf(orientation));
+
 	for (int i = 0; i < asteroids.objectCount; i++)
 	{
-		Collision::Box aBox1;
+		GameObject2D* a2 = asteroids.objectArray[i];
+		if (!a2) continue;
 
-		aBox1.width = size.x;
-		aBox1.height = size.y;
-		aBox1.x = position.x - aBox1.width * 0.5f;
-		aBox1.y = position.y - aBox1.height * 0.5f;
+		// Skip collision check with itself
+		if (a2 == this) continue;
 
-		glm::vec2 normal = glm::vec2(cosf(orientation), sinf(orientation));
+		// Create circle for other asteroid
+		Collision::Circle circle2;
+		circle2.x = a2->position.x;
+		circle2.y = a2->position.y;
+		circle2.radius = a2->size.x * 0.5f;
 
-		for (int i = 0; i < asteroids.objectCount; i++)
-		{
-			GameObject2D* a2 = asteroids.objectArray[i];
-			if (!a2) continue;
+		a2->normal = glm::vec2(cosf(a2->orientation), sinf(a2->orientation));
 
-			Collision::Box aBox2;
-
-			aBox2.width = a2->size.x;
-			aBox2.height = a2->size.y;
-			aBox2.x = a2->position.x - aBox2.width * 0.5f;
-			aBox2.y = a2->position.y - aBox2.height * 0.5f;
-
-			
-
-			if(aBox1.x != aBox2.x && aBox1.y != aBox2.y)
-			{
-				if (Collision::checkCollision(aBox1, aBox2))
-				{
-
-				}
-			}
+		if (Collision::checkCollision(circle1, circle2))
+		{	
+			velocity = glm::reflect(velocity, normal);
+			a2->velocity = glm::reflect(a2->velocity, a2->normal);
 		}
 	}
 }

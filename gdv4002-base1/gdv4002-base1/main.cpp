@@ -191,27 +191,30 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 
 	if(player)
 	{
-		Collision::Box pBox;
-		pBox.width = player->size.x;
-		pBox.height = player->size.y;
-		pBox.x = player->position.x - pBox.width * 0.5f;   // convert center -> top-left
-		pBox.y = player->position.y - pBox.height * 0.5f;
+		Collision::Circle pCircle;
+		pCircle.x = player->position.x;
+		pCircle.y = player->position.y;
+		pCircle.radius = player->size.x * 0.5f;  // convert center -> top-left
 
 		for (int i = 0; i < asteroid.objectCount; ++i)
 		{
 			GameObject2D* aObj = asteroid.objectArray[i];
 			if (!aObj) continue;
 
-			Collision::Box aBox;
-			aBox.width = aObj->size.x;
-			aBox.height = aObj->size.y;
-			aBox.x = aObj->position.x - aBox.width * 0.5f;
-			aBox.y = aObj->position.y - aBox.height * 0.5f;
+			Collision::Circle aCircle;
+			aCircle.x = aObj->position.x;
+			aCircle.y = aObj->position.y;
+			aCircle.radius = aObj->size.x * 0.5f;
 
-			if (Collision::checkCollision(pBox, aBox))
+			if (Collision::checkCollision(pCircle, aCircle))
 			{
 				// handle collision: example - delete asteroid and respawn
 				deleteObject("player");
+
+				for (int i = 0; i < asteroid.objectCount; i++)
+				{
+					deleteObject(asteroid.objectArray[i]);
+				}
 			}
 
 		}
@@ -226,24 +229,22 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 		GameObject2D* bObj = bullet.objectArray[i];
 		if (!bObj) continue;
 
-		Collision::Box bBox;
-		bBox.width = bObj->size.x;
-		bBox.height = bObj->size.y;
-		bBox.x = bObj->position.x - bBox.width * 0.5f;
-		bBox.y = bObj->position.y - bBox.height * 0.5f;
+		Collision::Circle bCircle;
+		bCircle.x = bObj->position.x;
+		bCircle.y = bObj->position.y;
+		bCircle.radius = bObj->size.x * 0.5f;  // convert center -> top-left
 		
 		for (int i = 0; i < asteroid.objectCount; ++i)
 		{
 			GameObject2D* aObj = asteroid.objectArray[i];
 			if (!aObj) continue;
 
-			Collision::Box aBox;
-			aBox.width = aObj->size.x;
-			aBox.height = aObj->size.y;
-			aBox.x = aObj->position.x - aBox.width * 0.5f;
-			aBox.y = aObj->position.y - aBox.height * 0.5f;
+			Collision::Circle aCircle;
+			aCircle.x = aObj->position.x;
+			aCircle.y = aObj->position.y;
+			aCircle.radius = aObj->size.x * 0.5f;
 
-			if (Collision::checkCollision(bBox, aBox))
+			if (Collision::checkCollision(bCircle, aCircle ))
 			{
 				deleteObject(aObj);
 				deleteObject(bObj);

@@ -20,6 +20,8 @@ public:
 
 	glm::vec2		velocity = glm::vec2(0.0f, 0.0f);
 
+	glm::vec2		normal = glm::vec2(0.0f, 0.0f);
+
 	GameObject2D();
 	GameObject2D(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID);
 	GameObject2D(glm::vec2 initPosition, glm::vec2 initSize, GLuint initTextureID);
