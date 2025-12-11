@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Engine.h"
 #include "GameObject2D.h"
+#include "Collision.h"
 #include <complex>
 #include <random>
 #include <iostream>
@@ -12,7 +13,7 @@ using std::endl;
 
 
 const float moveSpeed = 2.0f;
-complex<float> i = complex<float>(0.0f, 1.0f);
+float pi = 3.14159;
 
 // define static members declared in Enemy.h
 std::string Enemy::key = "asteroid";
@@ -29,6 +30,7 @@ Enemy::Enemy(
 
 	phaseAngle = initialPhase;
 	phaseVelocity = initialPhaseVelocity;
+	velocity = glm::vec2(cosf(initOrientation), sinf(initOrientation));
 	//asteroidCount = 2;
 }
 
@@ -37,13 +39,48 @@ void Enemy::update(double tDelta) {
 
 	//print orientation for debug
 	//cout << "orientation: " << orientation << endl;
-	complex<float> i = complex<float>(0.0f, 1.0f);
-	complex<float> rotation = exp(i * (orientation));
+	/*complex<float> i = complex<float>(0.0f, 1.0f);
+	complex<float> rotation = exp(i * (orientation));*/
+	glm::vec2 tangent = glm::vec2(-sinf(orientation), cosf(orientation));
 
-	position.x += moveSpeed * rotation.real() * (float)tDelta;
-	position.y += moveSpeed * rotation.imag() * (float)tDelta;
+	position += velocity * moveSpeed * (float)tDelta;
+	
+	GameObjectCollection asteroids = getObjectCollection("asteroid");
 
+	for (int i = 0; i < asteroids.objectCount; i++)
+	{
+		Collision::Box aBox1;
 
+		aBox1.width = size.x;
+		aBox1.height = size.y;
+		aBox1.x = position.x - aBox1.width * 0.5f;
+		aBox1.y = position.y - aBox1.height * 0.5f;
+
+		glm::vec2 normal = glm::vec2(cosf(orientation), sinf(orientation));
+
+		for (int i = 0; i < asteroids.objectCount; i++)
+		{
+			GameObject2D* a2 = asteroids.objectArray[i];
+			if (!a2) continue;
+
+			Collision::Box aBox2;
+
+			aBox2.width = a2->size.x;
+			aBox2.height = a2->size.y;
+			aBox2.x = a2->position.x - aBox2.width * 0.5f;
+			aBox2.y = a2->position.y - aBox2.height * 0.5f;
+
+			
+
+			if(aBox1.x != aBox2.x && aBox1.y != aBox2.y)
+			{
+				if (Collision::checkCollision(aBox1, aBox2))
+				{
+
+				}
+			}
+		}
+	}
 }
 
 // remember to reference!!!

@@ -16,9 +16,6 @@ using std::complex;
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 void deleteObjects(GLFWwindow* window, double tDelta);
 
-float randomX();
-float randomY();
-//float randomRotation();
 
 const float pi = 3.141593f;
 
