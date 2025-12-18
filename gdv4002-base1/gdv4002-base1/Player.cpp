@@ -16,7 +16,7 @@ extern std::bitset<5> keys;
 
 const float EPS = 0.1f;
 
-int Player::bulletNumber = 1;
+uint64_t Player::bulletNumber = 1;
 std::string Player::key = "bullet";
 
 //GLuint bulletTexture = loadTexture("Resources\\Textures\\bullet.png");

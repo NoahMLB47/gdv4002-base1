@@ -11,7 +11,7 @@ private:
 	float bulletCooldown;
 	float fireRate;
 
-	static int bulletNumber;
+	static uint64_t bulletNumber;
 
 	bool canFire;
 
