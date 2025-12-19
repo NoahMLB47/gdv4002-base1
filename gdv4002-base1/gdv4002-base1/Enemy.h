@@ -8,15 +8,12 @@
 class Enemy : public GameObject2D {
 
 private:
-	float phaseAngle; // in radians
-	float phaseVelocity; // angle change per second
-	//int asteroidCount;
 	static std::string key;
-	static int asteroidNumber;
+	static uint64_t asteroidNumber;
 	glm::vec2 velocity;
 
 public:
-	Enemy(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID, float initialPhase, float initialPhaseVelocity);
+	Enemy(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize, GLuint initTextureID);
 	void update(double tDelta) override;
 
 	static std::mt19937& getRandomEngine2();

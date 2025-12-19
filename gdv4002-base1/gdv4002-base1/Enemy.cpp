@@ -12,24 +12,20 @@ using std::cout;
 using std::endl;
 
 
-const float moveSpeed = 2.0f;
+const float moveSpeed = 3.0f;
 float pi = 3.14159;
 
 // define static members declared in Enemy.h
 std::string Enemy::key = "asteroid";
-int Enemy::asteroidNumber = 1;
+uint64_t Enemy::asteroidNumber = 1;
 
 Enemy::Enemy(
 	glm::vec2 initPosition,
 	float initOrientation,
 	glm::vec2 initSize,
-	GLuint initTextureID,
-	float initialPhase,
-	float initialPhaseVelocity)
+	GLuint initTextureID)
 	: GameObject2D(initPosition, initOrientation, initSize, initTextureID) {
 
-	phaseAngle = initialPhase;
-	phaseVelocity = initialPhaseVelocity;
 	velocity = glm::vec2(cosf(initOrientation), sinf(initOrientation));
 	//asteroidCount = 2;
 }
@@ -105,7 +101,8 @@ float Enemy::randomRotation(glm::vec2 position)
 void Enemy::addAsteroid()
 {
 	glm::vec2 pos = glm::vec2(randomX(), randomY());
-	Enemy* enemy = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), loadTexture("Resources\\Textures\\asteroid.png"), 0.5f, glm::radians(45.0f));
+	Enemy* enemy = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.75f, 0.75f), loadTexture("Resources\\Textures\\asteroid.png")
+	);
 	addObject(key.c_str(), enemy);
 	addAsteroidNumber();
 }

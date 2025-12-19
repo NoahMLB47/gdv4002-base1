@@ -41,27 +41,27 @@ int main(void)
 	GLuint playerTexture = loadTexture("Resources\\Textures\\shipNoFlame.png");
 	GLuint enemyTexture = loadTexture("Resources\\Textures\\asteroid.png");
 	
-	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.75f, 0.375f), playerTexture, 1.0f);
+	Player* player1 = new Player(glm::vec2(-1.5f, 0.0f), 0.0f, glm::vec2(0.9f, 0.45f), playerTexture, 1.0f);
 	addObject("player", player1);
 
 	glm::vec2 pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
-	Enemy* enemy = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(45.0f));
+	Enemy* enemy = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.75f, 0.75f), enemyTexture);
 	addObject("asteroid", enemy);
 
 	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
-	Enemy* enemy1 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(90.0f));
+	Enemy* enemy1 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.75f, 0.75f), enemyTexture);
 	addObject("asteroid1", enemy1);
 
 	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
-	Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
-	addObject("asteroid2", enemy2);
+	Enemy* enemy2 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.75f, 0.75f), enemyTexture);
+	addObject("asteroid1", enemy2);
 
 	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
-	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
-	addObject("asteroid3", enemy3);
+	Enemy* enemy3 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.75f, 0.75f), enemyTexture);
+	addObject("asteroid1", enemy3);
 	
 	pos = glm::vec2(Enemy::randomX(), Enemy::randomY());
-	Enemy* enemy4= new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.5f, 0.5f), enemyTexture, 0.5f, glm::radians(60.0f));
+	Enemy* enemy4 = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.75f, 0.75f), enemyTexture);
 	addObject("asteroid4", enemy4);
 
 	//initialise keyboard input

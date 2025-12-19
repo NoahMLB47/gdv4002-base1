@@ -38,16 +38,14 @@ void Player::update(double tDelta) {
 	const float thrust = 2.0f;
 
 	constexpr float thetaVelocity = glm::radians(360.0f); // 360 degrees stored as radians
-	static float currentRotation = 0;
-	const float MAX_VELOCITY = 5.0f;
+	static float currentRotation = 0.0f;
+	const int MAX_VELOCITY = 5;
 
 	complex<float> i = complex<float>(0.0f, 1.0f);
 	complex<float> rotation = exp(i * (orientation));
 
 	glm::vec2 drag = glm::vec2(-velocity.x, -velocity.y);
-	
-	//printf("orientation: %f real %f imaginary %f\n", player1->orientation, rotation.real(), rotation.imag());
-	// 
+	 
 	// 1. accumulate forces
 
 	if (keys.test(Key::LEFT) == true)
