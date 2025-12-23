@@ -38,6 +38,7 @@ void Enemy::update(double tDelta) {
 	/*complex<float> i = complex<float>(0.0f, 1.0f);
 	complex<float> rotation = exp(i * (orientation));*/
 	glm::vec2 tangent = glm::vec2(-sinf(orientation), cosf(orientation));
+	glm::vec2 normal = glm::vec2(cosf(orientation), sinf(orientation));
 
 	position += velocity * moveSpeed * (float)tDelta;
 	
@@ -48,8 +49,6 @@ void Enemy::update(double tDelta) {
 	circle1.x = position.x;
 	circle1.y = position.y;
 	circle1.radius = size.x * 0.5f; // Use half of width as radius (assumes square/circular sprite)
-
-	glm::vec2 normal = glm::vec2(cosf(orientation), sinf(orientation));
 
 	for (int i = 0; i < asteroids.objectCount; i++)
 	{
