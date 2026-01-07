@@ -16,9 +16,6 @@ using std::complex;
 void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 void deleteObjects(GLFWwindow* window, double tDelta);
 
-
-const float pi = 3.141593f;
-
 std::bitset<5> keys{ 0x0 };
 
 int main(void) 
@@ -137,16 +134,9 @@ void myKeyboardHandler(GLFWwindow* window, int key, int scancode, int action, in
 	}
 }
 
-// remember to reference!!!
-std::mt19937& getRandomEngine()
-{
-	static std::random_device rd;
-	static std::mt19937 engine(rd());
-	return engine;
-}
-
 void deleteObjects(GLFWwindow* window, double tDelta) {
 
+	// make collection of bullets
 	GameObjectCollection bullet = getObjectCollection("bullet");
 
 	if (bullet.objectCount == 0)
@@ -155,6 +145,7 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 	}
 	//std::cout << bullet.objectCount << std::endl;
 
+	// check every bullet for a position outside of the viewplane
 	for (int i = 0; i < bullet.objectCount; i++) {
 
 		if (bullet.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f)
@@ -163,13 +154,16 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 			|| bullet.objectArray[i]->position.x < -(getViewplaneWidth() / 2.0f))
 		{
 
+			// delete if so
 			deleteObject(bullet.objectArray[i]);
-			std::cout << "Bullet deleted" << std::endl;
+			//std::cout << "Bullet deleted" << std::endl;
 		}
 	}
 
+	// make collection of asteroids
 	GameObjectCollection asteroid = getObjectCollection("asteroid");
 
+	// check every asteroid for a position outside of the viewplane
 	for (int i = 0; i < asteroid.objectCount; i++) {
 
 		if (asteroid.objectArray[i]->position.y < -(getViewplaneHeight() / 2.0f)
@@ -177,7 +171,8 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 			|| asteroid.objectArray[i]->position.x > (getViewplaneWidth() / 2.0f)
 			|| asteroid.objectArray[i]->position.x < -(getViewplaneWidth() / 2.0f))
 		{
-
+			
+			// delete if so
 			deleteObject(asteroid.objectArray[i]);
 			//std::cout << "Asteroid deleted" << std::endl;
 			Enemy::addAsteroid();
@@ -186,16 +181,18 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 
 	// collision detection between ship and asteroid
 	
-	// make player's box (GameObject2D::position is center; size is full width/height)
+	// get the player
 	GameObject2D* player = getObject("player");
 
 	if(player)
 	{
+		// make the hit box for the player
 		Collision::Circle pCircle;
 		pCircle.x = player->position.x;
 		pCircle.y = player->position.y;
 		pCircle.radius = player->size.x * 0.5f;  // convert center -> top-left
 
+		// make a box for every asteroid
 		for (int i = 0; i < asteroid.objectCount; ++i)
 		{
 			GameObject2D* aObj = asteroid.objectArray[i];
@@ -206,9 +203,9 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 			aCircle.y = aObj->position.y;
 			aCircle.radius = aObj->size.x * 0.5f;
 
+			// if player hit box and asteroid hit box collide delete player and all asteroids
 			if (Collision::checkCollision(pCircle, aCircle))
 			{
-				// handle collision: example - delete asteroid and respawn
 				deleteObject("player");
 
 				for (int i = 0; i < asteroid.objectCount; i++)
@@ -221,29 +218,31 @@ void deleteObjects(GLFWwindow* window, double tDelta) {
 	}
 
 	// collision detection between bullet and asteroid
-
-	// make bullet's box (GameObject2D::position is center; size is full width/height)
 	
 	for (int i = 0; i < bullet.objectCount; ++i)
 	{
 		GameObject2D* bObj = bullet.objectArray[i];
 		if (!bObj) continue;
 
+		// make a box for every bullet
 		Collision::Circle bCircle;
 		bCircle.x = bObj->position.x;
 		bCircle.y = bObj->position.y;
 		bCircle.radius = bObj->size.x * 0.5f;  // convert center -> top-left
 		
+		// check against every asteroid
 		for (int i = 0; i < asteroid.objectCount; ++i)
 		{
 			GameObject2D* aObj = asteroid.objectArray[i];
 			if (!aObj) continue;
 
+			// make a box for every asteroid
 			Collision::Circle aCircle;
 			aCircle.x = aObj->position.x;
 			aCircle.y = aObj->position.y;
 			aCircle.radius = aObj->size.x * 0.5f;
 
+			// if boxes are touching delete asteroid and bullet and add a new asteroid.
 			if (Collision::checkCollision(bCircle, aCircle ))
 			{
 				deleteObject(aObj);

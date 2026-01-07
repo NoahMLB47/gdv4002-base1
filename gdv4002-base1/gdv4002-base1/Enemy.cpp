@@ -27,7 +27,6 @@ Enemy::Enemy(
 	: GameObject2D(initPosition, initOrientation, initSize, initTextureID) {
 
 	velocity = glm::vec2(cosf(initOrientation), sinf(initOrientation));
-	//asteroidCount = 2;
 }
 
 
@@ -37,11 +36,15 @@ void Enemy::update(double tDelta) {
 	//cout << "orientation: " << orientation << endl;
 	/*complex<float> i = complex<float>(0.0f, 1.0f);
 	complex<float> rotation = exp(i * (orientation));*/
+	
+	// set the tangent and normal for asteroid
 	glm::vec2 tangent = glm::vec2(-sinf(orientation), cosf(orientation));
 	glm::vec2 normal = glm::vec2(cosf(orientation), sinf(orientation));
 
+	// update position every frame
 	position += velocity * moveSpeed * (float)tDelta;
 	
+	// get collection of all asteroids
 	GameObjectCollection asteroids = getObjectCollection("asteroid");
 
 	// Create circle for this asteroid
@@ -64,8 +67,10 @@ void Enemy::update(double tDelta) {
 		circle2.y = a2->position.y;
 		circle2.radius = a2->size.x * 0.5f;
 
+		// create normal for other asteroid
 		a2->normal = glm::vec2(cosf(a2->orientation), sinf(a2->orientation));
 
+		// if collision detected reflect velocity for both asteroids
 		if (Collision::checkCollision(circle1, circle2))
 		{	
 			velocity = glm::reflect(velocity, normal);
@@ -74,7 +79,7 @@ void Enemy::update(double tDelta) {
 	}
 }
 
-// remember to reference!!!
+// picks random number
 std::mt19937& Enemy::getRandomEngine2()
 {
 	static std::random_device rd;
@@ -84,12 +89,14 @@ std::mt19937& Enemy::getRandomEngine2()
 
 float Enemy::randomRotation(glm::vec2 position)
 {
+	// if position is on left side of screen, give it a rotation that will make it go to the right
 	if (position.x < 0.0f)
 	{
 		std::uniform_real_distribution<float> distribution(-90.0f, 90.0f);
 		return glm::radians(distribution(getRandomEngine2()));
 	}
 
+	// if position is on right side of screen, give it a rotation that will make it go to the left
 	else
 	{
 		std::uniform_real_distribution<float> distribution(90.0f, 270.0f);
@@ -99,10 +106,14 @@ float Enemy::randomRotation(glm::vec2 position)
 
 void Enemy::addAsteroid()
 {
+	// pick new random position for asteroid
 	glm::vec2 pos = glm::vec2(randomX(), randomY());
+	
+	// make and draw new asteroid
 	Enemy* enemy = new Enemy(pos, Enemy::randomRotation(pos), glm::vec2(0.75f, 0.75f), loadTexture("Resources\\Textures\\asteroid.png")
 	);
 	addObject(key.c_str(), enemy);
+	// add asteroid counter
 	addAsteroidNumber();
 }
 

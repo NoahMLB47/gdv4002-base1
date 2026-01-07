@@ -14,7 +14,15 @@ using std::endl;
 
 extern std::bitset<5> keys;
 
+// define constants
 const float EPS = 0.1f;
+
+const int MAX_VELOCITY = 5;
+
+const float thrust = 2.0f;
+
+constexpr float thetaVelocity = glm::radians(360.0f); // 360 degrees stored as radians
+complex<float> i = complex<float>(0.0f, 1.0f);
 
 uint64_t Player::bulletNumber = 1;
 std::string Player::key = "bullet";
@@ -34,45 +42,41 @@ Player::Player(glm::vec2 initPosition, float initOrientation, glm::vec2 initSize
 void Player::update(double tDelta) {
 	// add update code here
 	
+	// 
 	glm::vec2 F = glm::vec2(0.0f, 0.0f);
-	const float thrust = 2.0f;
 
-	constexpr float thetaVelocity = glm::radians(360.0f); // 360 degrees stored as radians
-	static float currentRotation = 0.0f;
-	const int MAX_VELOCITY = 5;
-
-	complex<float> i = complex<float>(0.0f, 1.0f);
 	complex<float> rotation = exp(i * (orientation));
 
 	glm::vec2 drag = glm::vec2(-velocity.x, -velocity.y);
 	 
-	// 1. accumulate forces
-
+	// update force and orientation based on keyboard input
 	if (keys.test(Key::LEFT) == true)
 	{
+		// rotate left
 		orientation += thetaVelocity * (float)tDelta;
 	}
 	
 	if (keys.test(Key::RIGHT) == true)
 	{
+		// rotate right
 		orientation -= thetaVelocity * (float)tDelta;
 	}
 	
 	if (keys.test(Key::UP) == true)
 	{
-		currentRotation = orientation;
-		
+		// move forward in direction ship is facing
 		F += glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
 
+		// change texture
 		textureID = loadTexture("Resources\\Textures\\ship2.png");
 	}
 	
 	if (keys.test(Key::DOWN) == true)
 	{
-		currentRotation = orientation;
-		
+		// move backward in direction ship is facing
 		F -= glm::vec2(rotation.real() * thrust, rotation.imag() * thrust);
 
+		// change texture
 		textureID = loadTexture("Resources\\Textures\\ship2.png");
 	}
 
@@ -80,6 +84,7 @@ void Player::update(double tDelta) {
 	{
 		textureID = loadTexture("Resources\\Textures\\shipNoFlame.png");
 		
+		// slow down ship by using drag
 		velocity.x += drag.x * (float)tDelta;
 		if (velocity.x < EPS && velocity.x > -EPS)
 			velocity.x = 0.0f;
@@ -89,11 +94,13 @@ void Player::update(double tDelta) {
 			velocity.y = 0.0f;
 	}
 
+	// decrease count down if bullet has been fired
 	if (bulletCooldown > 0.0f)
 		bulletCooldown -= static_cast<float>(tDelta);
 	else
 		canFire = true;
 
+	// fires bullet and starts countdown if space is pressed
 	if (keys.test(Key::SPACE) == true && canFire == true)
 	{
 		canFire = false;
@@ -149,13 +156,13 @@ void Player::update(double tDelta) {
 	//cout << "cooldown:" << bulletCooldown << endl;
 }
 
-//add number to bullet
+// add number to bullet
 void Player::addBulletNumber()
 {
 	key = "bullet";
 	if (bulletNumber > 0)
 		key += std::to_string(bulletNumber);
-	cout << key << endl;
+	//cout << key << endl;
 	bulletNumber++;
 }
 
